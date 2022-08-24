@@ -6,6 +6,7 @@
         <th>Last Name</th>
         <th>Email</th>
         <th>Gender</th>
+        <th>Grade</th>
     </tr>
     {% for object in object_list %}
     <tr>
@@ -14,6 +15,7 @@
         <td>{{ object.last_name }} </td>
         <td>{{ object.email }} </td>
         <td>{{ object.gender }} </td>
+        <td>{{ object.grade__code }} </td>
     </tr>
     {% endfor %}    
 </table>

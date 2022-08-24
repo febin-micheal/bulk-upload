@@ -25,12 +25,13 @@ def home(request):
                 for cell in row:
                     row_data.append(str(cell.value))
                 if not Student.objects.filter(id=row_data[0]).exists():
-                    obj = Student(id=row_data[0], first_name=row_data[1], last_name=row_data[2], email=row_data[3], gender=row_data[4])
+                    grade = Grade.objects.filter(code=row_data[5]).values('id')
+                    obj = Student(id=row_data[0], first_name=row_data[1], last_name=row_data[2], email=row_data[3], gender=row_data[4], grade_id=grade)
                     objs.append(obj)
 
             Student.objects.bulk_create(objs)
 
-            object_list = list(Student.objects.all().values())
+            object_list = list(Student.objects.all().values('id', 'first_name', 'last_name', 'email', 'gender', 'grade__code'))
             return render(request, 'index.html', {'object_list': object_list})
 
     else:
