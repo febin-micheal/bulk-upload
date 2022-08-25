@@ -1,11 +1,18 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>Upload File</title>
+<h1>Upload File</h1>
+{% endblock %}
+
 {% block content %}
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}
     <button type="submit">Upload</button>
   </form>
-{% endblock %}
 
 {% for message in messages %}
   {{ message }}
 {% endfor %}
+<a href="{% url 'home' %}">Return Home</a>
+{% endblock %}

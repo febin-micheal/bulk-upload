@@ -1,11 +1,10 @@
-{% block content %}
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Upload</button>
-  </form>
+{% extends 'base.html' %}
+{% block head %}
+<title>Home</title>
+<h1>Bulk Upload</h1>
 {% endblock %}
 
-{% for message in messages %}
-  {{ message }}
-{% endfor %}
+{% block content %}
+<p><a href="{% url 'upload-file' %}">Upload Excel File</a></p>
+<p><a href="{% url 'list-view' %}">List view from Database</a></p>
+{% endblock %}

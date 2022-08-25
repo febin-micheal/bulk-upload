@@ -1,5 +1,12 @@
+{% extends 'base.html' %}
+{% block head %}
+<title>List view</title>
+<h1>List view</h1>
+{% endblock %}
+
 {% block content %}
-<table>
+<a href="{% url 'home' %}">Return Home</a>
+<table class="table table-striped">
     <tr>
         <th>id</th>
         <th>First Name</th>

@@ -6,6 +6,9 @@ from django.contrib import messages
 
 # Create your views here.
 
+def home(request):
+    return render(request, 'home.html')
+
 def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
