@@ -1,0 +1,11 @@
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Upload</button>
+  </form>
+{% endblock %}
+
+{% for message in messages %}
+  {{ message }}
+{% endfor %}
