@@ -39,31 +39,43 @@ def bulk_upload(request):
 
     # reduce db hits in expense of loops
     grade_list =  list(Grade.objects.values()) # hit 1
+    grade_ids = [grade['id'] for grade in grade_list]
     grade_codes = [grade['code'] for grade in grade_list]
 
-    grades = [Grade(code=row['grade_code']) for row in rows if row['grade_code'] not in grade_codes]
-
-    Grade.objects.bulk_create(grades) # hit 2
-    grade_list =  list(Grade.objects.values()) # hit 3
-
-    student_list =  list(Student.objects.values())  # hit 4    
+    student_list =  list(Student.objects.values())  # hit 2    
     student_ids = [student['id'] for student in student_list]
 
+    grades = []
     creates = []
     updates = []
+    count = 1
     for row in rows:
-        grade_id = [grade['id'] for grade in grade_list if grade['code'] == row['grade_code']]        
+        if row['grade_code'] in grade_codes:
+            grade_id = grade_ids[grade_codes.index(row['grade_code'])]
+        else:
+            if grade_ids:
+                grade_id = grade_ids[-1] + 1
+            else:
+                grade_id = count
+                count += 1
+            grade = Grade(id=grade_id, code=row['grade_code'])
+            grades.append(grade)
+            grade_codes.append(row['grade_code'])
+            grade_ids.append(grade_id)
+
         student_id = int(row['id'])
-        student = Student(id=student_id, first_name=row['first_name'], last_name=row['last_name'], email=row['email'], gender=row['gender'], grade_id=grade_id[0])
+        student = Student(id=student_id, first_name=row['first_name'], last_name=row['last_name'], email=row['email'], gender=row['gender'], grade_id=grade_id)
         if student_id in student_ids:
             updates.append(student)
         else:
             creates.append(student)
 
+    if grades:
+        Grade.objects.bulk_create(grades) # hit 3
+    if creates:
+        Student.objects.bulk_create(creates)   # hit 4
     if updates:
         Student.objects.bulk_update(updates, fields=['first_name', 'last_name', 'email', 'gender', 'grade_id']) # hit 5
-    if creates:
-        Student.objects.bulk_create(creates)   # hit 6
     return redirect('list-view')
 
 def list_view(request):
