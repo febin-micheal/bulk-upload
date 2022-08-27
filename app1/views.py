@@ -74,9 +74,9 @@ def bulk_upload(request):
     if grades:
         Grade.objects.bulk_create(grades) # hit 3
     if updates:
-        Student.objects.bulk_update(updates, fields=['first_name', 'last_name', 'email', 'gender', 'grade_id']) # hit 5
+        Student.objects.bulk_update(updates, fields=['first_name', 'last_name', 'email', 'gender', 'grade_id']) # hit 4
     if creates:
-        Student.objects.bulk_create(creates)   # hit 4
+        Student.objects.bulk_create(creates)   # hit 5
     return redirect('list-view')
 
 def list_view(request):
