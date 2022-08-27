@@ -50,17 +50,18 @@ def bulk_upload(request):
     updates = []
     count = 1
     for row in rows:
-        if row['grade_code'] in grade_codes:
-            grade_id = grade_ids[grade_codes.index(row['grade_code'])]
+        grade_code = row['grade_code']
+        if grade_code in grade_codes:
+            grade_id = grade_ids[grade_codes.index(grade_code)]
         else:
             if grade_ids:
                 grade_id = grade_ids[-1] + 1
             else:
                 grade_id = count
                 count += 1
-            grade = Grade(id=grade_id, code=row['grade_code'])
+            grade = Grade(id=grade_id, code=grade_code)
             grades.append(grade)
-            grade_codes.append(row['grade_code'])
+            grade_codes.append(grade_code)
             grade_ids.append(grade_id)
 
         student_id = int(row['id'])
