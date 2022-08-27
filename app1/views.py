@@ -46,8 +46,8 @@ def bulk_upload(request):
     student_ids = [student['id'] for student in student_list]
 
     grades = []
-    creates = []
     updates = []
+    creates = []
     count = 1
     for row in rows:
         grade_code = row['grade_code']
@@ -73,10 +73,10 @@ def bulk_upload(request):
 
     if grades:
         Grade.objects.bulk_create(grades) # hit 3
-    if creates:
-        Student.objects.bulk_create(creates)   # hit 4
     if updates:
         Student.objects.bulk_update(updates, fields=['first_name', 'last_name', 'email', 'gender', 'grade_id']) # hit 5
+    if creates:
+        Student.objects.bulk_create(creates)   # hit 4
     return redirect('list-view')
 
 def list_view(request):
